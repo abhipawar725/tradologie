@@ -1,9 +1,11 @@
-import React from "react";
-
-export default function AdminLayout({children} : {children: React.ReactNode}) {
-   return (
-    <>
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
     <div className="flex min-h-screen">
+      {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white p-5">
         <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
         <nav className="space-y-3">
@@ -13,10 +15,11 @@ export default function AdminLayout({children} : {children: React.ReactNode}) {
           <a href="/admin/blogs" className="block">Blogs</a>
         </nav>
       </aside>
+
+      {/* Main Content */}
       <main className="flex-1 p-6 bg-gray-100">
-      {children}
-      </main>  
+        {children}
+      </main>
     </div>
-    </>
-   ) 
+  );
 }
