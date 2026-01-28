@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function AdminLayout({
   children,
 }: {
@@ -7,6 +9,9 @@ export default function AdminLayout({
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white p-5">
+        <div className="bg-white p-2 text-center">
+          <Image src="/logo-dark.webp" alt="logo" width={230} height={60} loading="eager" />
+        </div>
         <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
         <nav className="space-y-3">
           <a href="/admin/dashboard" className="block">Dashboard</a>
