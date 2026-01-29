@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { RiSearch2Line } from "@remixicon/react";
 
 export default function AdminLayout({
   children,
@@ -6,7 +7,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex min-h-screen bg-white text-secondary">
       {/* Sidebar */}
       <aside className="w-64 bg-white shadow-2xl fixed top-0 h-screen overflow-auto">
         <div className="bg-white p-3">
@@ -35,7 +36,12 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 mt-20 p-4">
+      <main className="flex-1 ml-64 p-4">  
+        <div className="p-3 h-16 w-full bg-white/70">
+           <div className="bg-white w-full py-2 px-4 rounded-md shadow-md">
+              <RiSearch2Line size={24} /> 
+           </div>
+        </div>
       {children}
       </main>
     </div>

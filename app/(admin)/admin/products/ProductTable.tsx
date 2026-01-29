@@ -1,12 +1,12 @@
 
-const ProductTable = ({ products, loading }: any) => {
+const ProductTable = ({ products, loading, sidebar }: any) => {
     console.log(products)
   return (
     <>
       <div className="shadow bg-white rounded-xl p-4">
         <div className="flex items-center justify-between gap-3 mb-3">
           <h2>Product List</h2>
-          <button type="button" className="bg-orange-700 text-white rounded py-1 px-3">
+          <button type="button" className="bg-orange-700 text-white rounded py-1 px-3" onClick={sidebar}>
             Add
           </button>
         </div>
