@@ -7,9 +7,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-white text-secondary">
+    <div className="flex min-h-screen bg-white">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-2xl fixed top-0 h-screen overflow-auto">
+      <aside className="w-64 bg-white shadow-soft fixed top-0 h-screen overflow-auto">
         <div className="bg-white p-3">
           <Image
             src="/logo-dark.webp"
