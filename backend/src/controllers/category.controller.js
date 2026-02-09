@@ -26,11 +26,12 @@ export const Create = async (req, res) => {
     const slug = slugify(name, { lower: true, strict: true });
 
     const exists = await Category.findOne({ slug });
-    if (exists) return res.status(409).json({ message: "Category already exists" });
+    if (exists) return res.status(409).json({ message: "Category already exists" });   
 
     const category = await Category.create({
       name,
       slug,
+      image: req.file?.filename || null,
       parentId: parentId || null,
     });
 
@@ -73,6 +74,10 @@ export const Update = async (req, res) => {
 
     if (typeof showInHome === "boolean") {
       update.showInHome = showInHome;
+    }
+
+    if(req.file){
+      update.image = req.file?.filename || null
     }
 
     if (Object.keys(update).length === 0) {

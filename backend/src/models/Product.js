@@ -1,29 +1,38 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 const productSchema = new Schema(
   {
     name: {
       type: String,
       trim: true,
+      minlength: 3,
+      maxlength: 100,
+      index: true,
       required: true,
     },
-    images: {
-      type: String,
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+      index: true,
     },
+    slug: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      unique: true,
+      immutable: true,
+      index: true,
+      required: true
+    },
+    images: [{
+      type: String,
+      required: true
+    }],
     minQty: {
-      type: String,
-      trim: true,
-      required: true,
-    },
-    bagSize: {
-      type: String,
-      trim: true,
-      required: true,
-    },
-    bagType: {
-      type: String,
-      trim: true,
-      required: true,
+      type: Number,
+      min: 1,
+      required: true
     },
     type: {
       type: String,
@@ -32,9 +41,23 @@ const productSchema = new Schema(
     },
     shortDescription: {
       type: String,
+      minlength: 10,
+      maxlength: 200
     },
     description: {
       type: String,
+      minlength: 50,
+      maxlength: 5000
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+      index: true,
+    },
+    showInHome: {
+      type: Boolean,
+      default: true,
+      index: true,
     },
   },
   { timestamps: true },
