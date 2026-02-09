@@ -1,15 +1,16 @@
 import { Router } from "express";
-import { Register, Login, Logout } from "../controllers/user.controller.js";
-import { verifyToken } from "../middlewares/auth.middleware.js";
+import { Login } from "../controllers/auth.controller.js";
+// import {Login, Logout} from "../controllers/auth.controller.js"
+import authorisation from "../middlewares/auth.middleware.js";
 
-const userRoute = Router();
+const authRoute = Router();
 
-userRoute.post("/login", Login);
-userRoute.post("/logout", Logout);
-userRoute.get("/profile", verifyToken, (req, res) => {
-    res.status(200).json({
-        message: "profile page"
-    })
-})
+authRoute.post("/login", authorisation, Login);
+// authRoute.post("/logout", Logout);
+// authRoute.get("/profile", authorisation, (req, res) => {
+//     res.status(200).json({
+//         message: "profile page"
+//     })
+// })
 
-export default userRoute;
+export default authRoute;

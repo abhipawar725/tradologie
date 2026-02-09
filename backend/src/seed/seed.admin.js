@@ -1,19 +1,16 @@
-import bcrypt from "bcrypt";
-import User from "../models/User.js";
+import User from "../models/user.model.js";
 
 const createAdmin = async () => {
-  const existingUser = await User.findOne({ email: "admin@tradologie.com" });
+  const existingUser = await User.findOne({ email: "superadmin@tradologie.com" });
   if (existingUser) {
     console.log("admin already exists");
     return;
   }
 
-  const hashedPassword = await bcrypt.hash("Admin2804@", 10);
-
   await User.create({
     name: "super admin",
-    email: "admin@tradologie.com",
-    password: hashedPassword,
+    email: "superadmin@tradologie.com",
+    password: "Super2804@",
     role: "admin",
   });
 
