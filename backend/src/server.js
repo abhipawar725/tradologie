@@ -6,6 +6,7 @@ import userRoutes from "./routes/user.routes.js";
 import authRoute from "./routes/auth.routes.js";
 import { limiter } from "./middlewares/rateLimit.middleware.js";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 
 const PORT = process.env.PORT || 5000
 const app = express()
@@ -13,12 +14,13 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
+app.use(cors())
 
 app.use("/", authRoute)
 app.use("/api", limiter)
 app.use("/api/category", categoryRouter)
 app.use("/api/product", productRouter)
-// app.use("/api/user", userRoutes)
+app.use("/api/user", userRoutes)
 
 connectDb().then(()=>{
     app.listen(PORT, () => console.log(PORT, "app is connected"))
