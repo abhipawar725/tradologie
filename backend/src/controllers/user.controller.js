@@ -2,6 +2,17 @@ import mongoose from "mongoose";
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 
+export const GetMe = async (req, res) => {
+  try {
+    const userId = req.user.user;
+    const user = await User.findById(userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    return res.status(200).json({ message: "User detail", user });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 export const Fetch = async (req, res) => {
   try {
     const users = await User.find().select("-password").lean();
@@ -26,10 +37,13 @@ export const Create = async (req, res) => {
       return res.status(409).json({ message: "User already exists" });
     }
 
-    const user = await User.create({ name, email, password, role: "user" });
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({ name, email, password:hashedPassword, role });
     return res.status(201).json({ message: "User created successfully", user });
   } catch (error) {
-    if (error.code === 11000) return res.status(409).json({ message: "Duplicate user" });
+    if (error.code === 11000)
+      return res.status(409).json({ message: "Duplicate user" });
     return res.status(500).json({ error: error.message });
   }
 };
@@ -48,12 +62,18 @@ export const Update = async (req, res) => {
 
     const update = {};
 
-    if (name.trim() === "" || email.trim() === "" || password.trim() === "" || role.trim() === "") {
+    if (
+      name.trim() === "" ||
+      email.trim() === "" ||
+      password.trim() === "" ||
+      role.trim() === ""
+    ) {
       return res.status(400).json({ message: "All field are required" });
     }
 
     if (name) {
-      if (name.trim().length < 3) return res.status(400).json({ message: "Invalid user name" });
+      if (name.trim().length < 3)
+        return res.status(400).json({ message: "Invalid user name" });
       update.name = name;
     }
 
@@ -65,9 +85,12 @@ export const Update = async (req, res) => {
     if (role) update.role = role;
 
     const updatedUser = await User.findByIdAndUpdate(id, update, { new: true });
-    return res.status(200).json({ message: "User updated successfully", updatedUser });
+    return res
+      .status(200)
+      .json({ message: "User updated successfully", updatedUser });
   } catch (error) {
-    if (error.code === 11000) return res.status(409).json({ message: "Duplicate user" });
+    if (error.code === 11000)
+      return res.status(409).json({ message: "Duplicate user" });
     return res.status(500).json({ error: error.message });
   }
 };
@@ -83,7 +106,9 @@ export const Delete = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const deleted = await User.findByIdAndDelete(id);
-    return res.status(200).json({ message: "User deleted successfully", deleted });
+    return res
+      .status(200)
+      .json({ message: "User deleted successfully", deleted });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }

@@ -1,14 +1,18 @@
 import api from "../api/axios";
 import { useEffect, useState } from "react";
 
-const useauth = () => {
+const useAuth = () => {
   const [isAuth, setIsAuth] = useState(false)
   const [loading, setLoading] = useState(true)
-  return (
-    <div>
-      
-    </div>
-  )
+ 
+  useEffect(() => {
+    api.get("/api/user/me")
+    .then(() => setIsAuth(true))
+    .catch(() => setIsAuth(false))
+    .finally(() => setLoading(false))
+  },[])
+
+  return {isAuth, loading}
 }
 
-export default useauth
+export default useAuth
