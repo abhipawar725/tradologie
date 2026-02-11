@@ -1,4 +1,4 @@
-const Create = () => {
+const CategoryCreate = () => {
   return (
     <div className="p-4 shadow-card bg-white rounded-md max-w-lg w-full">
       <form action="">
@@ -30,4 +30,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default CategoryCreate;
