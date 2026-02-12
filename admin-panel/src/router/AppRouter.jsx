@@ -23,20 +23,22 @@ const Approuter = () => {
           <Route element={<ProtectedRoute />}>
             <Route element={<AuthLayout />}>
               <Route path="/" element={<Dashboard />} />
-              <Route>
+              <Route path="category">
+                <Route index element={<CategoryList />} />
+                <Route path="add" element={<CategoryCreate />} />
+                <Route path="edit/:id" element={<CategoryEdit />} />
               </Route>
-              <Route>
-              </Route> 
-              <Route path="/category" element={<CategoryList />} />
-              <Route path="/category/add" element={<CategoryCreate />} />
-              <Route path="/category/edit/:id" element={<CategoryEdit />} />
-              <Route path="/product" element={<ProductList />} />
-              <Route path="/product/add" element={<ProductCreate />} />
-              <Route path="/product/edit/:id" element={<ProductEdit />} />
+              <Route path="product">
+                <Route index element={<ProductList />} />
+                <Route path="add" element={<ProductCreate />} />
+                <Route path="edit/:id" element={<ProductEdit />} />
+              </Route>
               <Route element={<AdminRoute />}>
-                <Route path="/user" element={<UserList />} />
-                <Route path="/user/add" element={<UserCreate />} />
-                <Route path="/user/edit/:id" element={<UserEdit />} />
+                <Route path="user">
+                  <Route index element={<UserList />} />
+                  <Route path="add" element={<UserCreate />} />
+                  <Route path="edit/:id" element={<UserEdit />} />
+                </Route>
               </Route>
             </Route>
           </Route>
