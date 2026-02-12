@@ -1,6 +1,6 @@
 import Sidebar from "./Sidebar"
 import {Outlet} from "react-router-dom"
-const AdminLayout = () => {
+const AuthLayout = () => {
   return (
     <div>
         <Sidebar />
@@ -9,4 +9,4 @@ const AdminLayout = () => {
   )
 }
 
-export default AdminLayout
+export default AuthLayout
