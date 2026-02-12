@@ -31,32 +31,45 @@ const Login = () => {
 
   return (
     <>
-      <div className="p-4 shadow-card bg-white rounded-md max-w-lg w-full">
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-5 w-full">
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium" htmlFor="name">
-                Full Name
-              </label>
-              <input type="text" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" name="name" id="name" />
+      <div className="flex">
+        {/* <div className="relative h-screen flex-1">
+          <img src="/images/login-banner.webp" alt="banner" className="absolute inset-0 w-full h-full object-cover object-center" />
+          <div className="absolute inset-0 bg-gradient-t from-black/80 via-black/50 to-black/20"></div>
+          <div className="relative z-10 h-full p-12 flex flex-col justify-between text-white">
+            <img src="/images/logo.webp" alt="logo" className="w-[256px]" />
+            <div className="text-white w-8/12">
+              <h1 className="text-4xl font-semibold mb-6 leading-tight">Powering Global B2B Trade</h1>
+              <p className="text-lg text-white/90">Connect with verified international buyers and suppliers. Manage inquiries, products, and high-value trade opportunities through a secure and intelligent trading platform.</p>
             </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium" htmlFor="email">
-                Email
-              </label>
-              <input type="text" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" name="email" id="email" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium" htmlFor="password">
-                Password
-              </label>
-              <input type="text" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" name="password" id="password" />
-            </div>
-            <button type="submit" className="px-4 py-2 bg-primary text-white rounded-md">
-              Login
-            </button>
           </div>
-        </form>
+        </div> */}
+        <div className="p-6 bg-white w-105">
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-5 w-full">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium" htmlFor="name">
+                  Full Name
+                </label>
+                <input type="text" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" name="name" id="name" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium" htmlFor="email">
+                  Email
+                </label>
+                <input type="text" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" name="email" id="email" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium" htmlFor="password">
+                  Password
+                </label>
+                <input type="text" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" name="password" id="password" />
+              </div>
+              <button type="submit" className="px-4 py-2 bg-primary text-white rounded-md">
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
       <ToastContainer position="top-center" autoClose={3000} />
     </>
