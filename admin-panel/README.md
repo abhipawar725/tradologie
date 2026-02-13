@@ -1,5 +1,6 @@
 # React + Vite
 https://demos.pixinvent.com/vuexy-html-admin-template/html/vertical-menu-template/
+NEXT_PUBLIC_TINYMCE_EDITOR_KEY = klvekg61edcy2tj939iaj8252d9c8robmo9e5szf4see101q
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

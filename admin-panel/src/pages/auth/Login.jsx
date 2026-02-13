@@ -32,7 +32,7 @@ const Login = () => {
   return (
     <>
       <div className="flex">
-        {/* <div className="relative h-screen flex-1">
+        <div className="relative h-screen flex-1">
           <img src="/images/login-banner.webp" alt="banner" className="absolute inset-0 w-full h-full object-cover object-center" />
           <div className="absolute inset-0 bg-gradient-t from-black/80 via-black/50 to-black/20"></div>
           <div className="relative z-10 h-full p-12 flex flex-col justify-between text-white">
@@ -42,7 +42,7 @@ const Login = () => {
               <p className="text-lg text-white/90">Connect with verified international buyers and suppliers. Manage inquiries, products, and high-value trade opportunities through a secure and intelligent trading platform.</p>
             </div>
           </div>
-        </div> */}
+        </div>
         <div className="p-6 bg-white w-105">
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-5 w-full">
