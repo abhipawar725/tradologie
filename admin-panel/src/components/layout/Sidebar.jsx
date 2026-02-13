@@ -48,7 +48,7 @@ const Sidebar = () => {
     <>
       <aside className="w-64 bg-white shadow-soft fixed top-0 h-screen overflow-auto">
         <div className="bg-white p-3">
-          <img src="/images/logo.webp" alt="logo" className="w-[256px]" />
+          {/* <img src="/images/logo.webp" alt="logo" className="w-[256px]" /> */}
         </div>
 
         <nav className="space-y-3 px-3">

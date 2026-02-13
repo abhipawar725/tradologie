@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 import Category from "../models/Category.js";
 import slugify from "slugify";
+import CategoryTree from "../utils/categoryTree.js";
 
 export const Fetch = async (req, res) => {
   try {
     const categories = await Category.find({ isActive: true }).lean();
-    return res.status(200).json({ categories });
+    const tree = CategoryTree(categories)
+    return res.status(200).json({categories: tree});
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "something went wrong" });
