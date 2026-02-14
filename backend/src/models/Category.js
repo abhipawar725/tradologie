@@ -32,7 +32,7 @@ const categorySchema = new Schema(
       index: true,
     },
     showInHome: {
-      type: Boolean,
+        type: Boolean,
       default: true,
       index: true,
     },
