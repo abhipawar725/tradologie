@@ -4,8 +4,12 @@ import slugify from "slugify";
 
 export const Fetch = async (req, res) => {
   try {
-    const categories = await Category.find({ isActive: true }).lean();
-    return res.status(200).json({categories});
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 5
+    const skip = (page - 1) * limit
+    const total = await Category.countDocuments()
+    const categories = await Category.find().sort({createdAt: 1}).skip(skip).limit(limit).lean();
+    return res.status(200).json({data:categories, total, page, limit, totalPages: Math.ceil(total / limit)});
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "something went wrong" });
