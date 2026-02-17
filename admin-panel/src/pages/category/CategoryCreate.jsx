@@ -1,123 +1,108 @@
 import { getCategory } from "../../api/category.api";
-import { useState } from "react";
-import { useEffect } from "react";
-import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from "@remixicon/react";
+import { addCategory } from "../../api/category.api";
+import { useEffect, useState, useRef } from "react";
 
 const CategoryCreate = () => {
+  const [parentId, setParentId] = useState("");
   const [categories, setCategories] = useState([]);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const formRef = useRef()
+
   const getCategories = async () => {
-    const res = await getCategory(page, limit);
-    setCategories(res.data.data);
-    setTotalPages(res.data.totalPages);
+    const res = await getCategory({isActive: true});
+    setCategories(res.data.data.categories);
     setLoading(false);
   };
-  const handlePage = (pageNumber) => {
-    if (pageNumber < 1 || pageNumber > totalPages) return;
-    setPage(pageNumber);
-  };
-  const handleLimit = (e) => {
-    setLimit(parseInt(e.target.value));
-    setPage(1);
-  };
+
   useEffect(() => {
     getCategories();
-  }, [page, limit]);
+  }, []);
 
+   const handleSubmit = async(e) => {
+    e.preventDefault()
+    const formData = new FormData(formRef.current)
+    const allData = {}
+    allData.name = formData.get('name')
+    allData.parentId = formData.get('parentId')
+    const images = formData.get('images')
+    formData.append('images', images)
+    console.log(allData)
+    // try {
+      // const res = await addCategory(allData)
+      // console.log(res.data)
+    // } catch (error) {
+      // console.log(error.response.data)           
+    // }   
+   }
   return (
     <>
-      <div className="flex flex-col gap-5">
-        <div className="bg-white p-4 shadow-card rounded-lg">
-          <h1 className="text-lg mb-5">Add a new Category</h1>
-          <div className="grid grid-cols-4 gap-5">
-            <div className="flex flex-col gap-1">
-              <label htmlFor="min-quantity" className="text-sm">
-                Minimun Order Quantity
-              </label>
-              <input type="text" id="min-quantity" name="minQty" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" required />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="bag-size" className="text-sm">
-                Bag Size
-              </label>
-              <input type="text" id="bag-size" name="bagSize" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" required />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="bag-type" className="text-sm">
-                Bag Type
-              </label>
-              <input type="text" id="bag-type" name="bagType" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" required />
-            </div>
-            <div className="flex h-full items-end">
-              <button className="px-4 py-2 capitalize w-full text-white bg-primary rounded-md text-sm h-9.5">publish product</button>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 shadow-card rounded-lg">
-          <h2 className="text-lg mb-5">All Categories</h2>
-          <table className="w-full text-sm text-left">
-            <thead>
-              <tr>
-                <th className="font-medium p-2 border-b border-slate-300">Image</th>
-                <th className="font-medium p-2 border-b border-slate-300">Name</th>
-                <th className="font-medium p-2 border-b border-slate-300">Slug</th>
-                <th className="font-medium p-2 border-b border-slate-300">Parent</th>
-                <th className="font-medium p-2 border-b border-slate-300">Status</th>
-                <th className="font-medium p-2 border-b border-slate-300">Show in Home</th>
-                <th className="font-medium p-2 border-b border-slate-300">Created Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map((cat) => (
-                <tr key={cat._id}>
-                  <td className="p-2 border-b border-slate-200">{cat.image || "-"}</td>
-                  <td className="p-2 border-b border-slate-200">{cat.name}</td>
-                  <td className="p-2 border-b border-slate-200">{cat.slug}</td>
-                  <td className="p-2 border-b border-slate-200">{cat.parentId ? cat.parentId : "main category"}</td>
-                  <td className="p-2 border-b border-slate-200">{cat.isActive ? "true" : "false"}</td>
-                  <td className="p-2 border-b border-slate-200">{cat.showInHome ? "true" : "false"}</td>
-                  <td className="p-2 border-b border-slate-200">{cat.updatedAt}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="mt-3">
-            <select onChange={handleLimit}>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-            </select>
-            <nav aria-label="pagination">
-              <ul className="pagination flex items-center gap-2 justify-end">
-                <li>
-                  <button onClick={() => handlePage(page - 1)} className="page-link w-10 h-10 cursor-pointer flex items-center justify-center hover:bg-slate-100 rounded-md" type="button" disabled={page === 1}>
-                    <RiArrowLeftDoubleLine size={18} />
-                  </button>
-                </li>
-                {[...Array(totalPages)].map((_, index) => {
-                  const pageNumber = index + 1;
-                  return (
-                    <li>
-                      <button onClick={() => handlePage(pageNumber)} className="page-link w-10 h-10 cursor-pointer flex items-center justify-center hover:bg-slate-100 rounded-md" type="button">
-                        {pageNumber}
-                      </button>
-                    </li>
-                  );
-                })}
-                <li>
-                  <button onClick={() => handlePage(page + 1)} className="page-link w-10 h-10 cursor-pointer flex items-center justify-center hover:bg-slate-100 rounded-md" type="button" disabled={page === totalPages}>
-                    <RiArrowRightDoubleLine size={18} />
-                  </button>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
+      <div className="flex items-center justify-between gap-5 mb-4">
+        <h1 className="text-xl">Add a new Category</h1>
+        <button onClick={handleSubmit} className="px-4 py-2 capitalize text-white bg-primary rounded-md text-sm">
+          Publish
+        </button>
       </div>
+      <form ref={formRef}>
+        <div className="flex items-start gap-5">
+          <div className="basis-8/12">
+            <div className="bg-white p-4 shadow-card rounded-lg">
+              <div className="grid grid-cols-2 gap-5">
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="cat-name" className="text-sm">
+                    Category Name
+                  </label>
+                  <input
+                    type="text"
+                    id="cat-name"
+                    name="name"
+                    className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="parent-cat" className="text-sm">
+                    Parent Category
+                  </label>
+                  <select
+                    name="parentId"
+                    id="parent-cat"
+                    value={parentId}
+                    onChange={(e) => setParentId(e.target.value)}
+                    className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0"
+                  >
+                    <option value="" disabled>
+                      Select Category
+                    </option>
+                    {categories
+                      .map((cat) => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="basis-4/12">
+            <div className="bg-white p-4 shadow-card rounded-lg">
+              <div className="flex flex-col gap-1">
+                <label htmlFor="product-image" className="text-sm">
+                  Product Image
+                </label>
+                <div className="flex justify-center items-center relative w-full rounded-md cursor-pointer border-dashed border border-slate-200 text-sm px-3 py-2 outline-0 overflow-hidden h-20">
+                  <input
+                    type="file"
+                    name="images"
+                    className="absolute top-0 left-0 w-full h-full opacity-0"
+                  />
+                  <p>Upload Image</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </>
   );
 };
