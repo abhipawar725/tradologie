@@ -21,18 +21,12 @@ const CategoryCreate = () => {
    const handleSubmit = async(e) => {
     e.preventDefault()
     const formData = new FormData(formRef.current)
-    const allData = {}
-    allData.name = formData.get('name')
-    allData.parentId = formData.get('parentId')
-    const images = formData.get('images')
-    formData.append('images', images)
-    console.log(allData)
-    // try {
-      // const res = await addCategory(allData)
-      // console.log(res.data)
-    // } catch (error) {
-      // console.log(error.response.data)           
-    // }   
+    try {
+      const res = await addCategory(formData)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error.response)
+    }
    }
   return (
     <>
@@ -93,7 +87,7 @@ const CategoryCreate = () => {
                 <div className="flex justify-center items-center relative w-full rounded-md cursor-pointer border-dashed border border-slate-200 text-sm px-3 py-2 outline-0 overflow-hidden h-20">
                   <input
                     type="file"
-                    name="images"
+                    name="image"
                     className="absolute top-0 left-0 w-full h-full opacity-0"
                   />
                   <p>Upload Image</p>
