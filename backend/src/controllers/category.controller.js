@@ -33,8 +33,6 @@ export const Fetch = async (req, res) => {
 
 export const Create = async (req, res) => {
   try {
-    console.log(req.body)
-    console.log(req.file)
     const { name, parentId } = req.body;
     if (!name || name.trim().length < 3) {
       return res.status(400).json({ message: "Invalid category name" });

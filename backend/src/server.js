@@ -4,7 +4,7 @@ import categoryRouter from "./routes/category.routes.js";
 import productRouter from "./routes/product.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import authRoute from "./routes/auth.routes.js";
-import { limiter } from "./middlewares/rateLimit.middleware.js";
+// import { limiter } from "./middlewares/rateLimit.middleware.js";
 import cookieParser from "cookie-parser";
 import cors from "cors"
 import CategoryTree from "./utils/categoryTree.js";
@@ -19,7 +19,7 @@ app.use("/uploads", express.static("uploads"))
 app.use(cors({origin: "http://localhost:5173", credentials: true}))
 
 app.use("/", authRoute)
-app.use("/api", limiter)
+// app.use("/api", limiter)
 app.use("/api/category", categoryRouter)
 app.use("/api/product", productRouter)
 app.use("/api/user", userRoutes)
