@@ -1,23 +1,103 @@
-import React, { useEffect } from 'react'
-import { getCategoryById } from '../../api/category.api'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from "react";
+import { getCategoryById, getCategory } from "../../api/category.api";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const CategoryEdit = () => {
-  const {id} = useParams()
-  const getCategory = async() => {
-    const res = await getCategoryById(id)
-    console.log(res.data)
-  }
+  const formRef = useRef();
+  const [categories, setCategories] = useState([]);
+  const [categoryData, setCategoryData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+  const getCategoryData = async () => {
+    try {
+      setLoading(true);
+      const res = await getCategoryById(id);
+      setCategoryData(res.data.category);
+    } catch (error) {
+      toast.error("Failed to load category data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getParentCategory = async () => {
+    try {
+      setLoading(true);
+      const res = await getCategory({ isActive: true });
+      setCategories(res.data.data.categories);
+    } catch (error) {
+      toast.error("Failed to load categories");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-   getCategory()
-  },[])
+    getCategoryData();
+  }, []);
+
+  useEffect(() => {
+    getParentCategory();
+  }, []);
+
+  const handleSubmit = () => {};
 
   return (
-    <div>
-      category edit page
-    </div>
-  )
-}
+    <>
+      <div className="flex items-center justify-between gap-5 mb-4">
+        <h1 className="text-xl">Edit Category</h1>
+        <button onClick={handleSubmit} className="px-4 py-2 capitalize text-white bg-primary rounded-md text-sm">
+          Publish
+        </button>
+      </div>
+      <form ref={formRef}>
+        <div className="flex items-start gap-5">
+          <div className="basis-8/12">
+            <div className="bg-white p-4 shadow-card rounded-lg">
+              <div className="grid grid-cols-2 gap-5">
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="cat-name" className="text-sm">
+                    Category Name
+                  </label>
+                  <input type="text" id="cat-name" name="name" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" required />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="parent-cat" className="text-sm">
+                    Parent Category
+                  </label>
+                  <select name="parentId" id="parent-cat" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0">
+                    <option value="" disabled>
+                      Select Category
+                    </option>
+                    {categories.map((cat) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="basis-4/12">
+            <div className="bg-white p-4 shadow-card rounded-lg">
+              <div className="flex flex-col gap-1">
+                <label htmlFor="product-image" className="text-sm">
+                  Product Image
+                </label>
+                <div className="flex justify-center items-center relative w-full rounded-md cursor-pointer border-dashed border border-slate-200 text-sm px-3 py-2 outline-0 overflow-hidden h-20">
+                  <input type="file" name="image" className="absolute top-0 left-0 w-full h-full opacity-0" />
+                  <p>Upload Image</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <ToastContainer />
+    </>
+  );
+};
 
-export default CategoryEdit
+export default CategoryEdit;
