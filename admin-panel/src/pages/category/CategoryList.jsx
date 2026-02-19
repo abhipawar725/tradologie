@@ -1,6 +1,7 @@
 import { getCategory, deleteCategory } from "../../api/category.api";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import {
   RiArrowLeftDoubleLine,
   RiArrowRightDoubleLine,
@@ -14,6 +15,7 @@ const CategoryList = () => {
   const [limit, setLimit] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
   const getCategories = async () => {
     const res = await getCategory({ page, limit });
     setCategories(res.data.data.categories);
@@ -33,8 +35,6 @@ const CategoryList = () => {
   }, [page, limit]);
 
   const url = import.meta.env.VITE_BASE_URL;
-
-  const handleEdit = (id) => {};
 
   const handleDelete = async (id) => {
     try {
@@ -104,7 +104,7 @@ const CategoryList = () => {
                   {cat.updatedAt}
                 </td>
                 <td className="p-2 border-b border-slate-200">
-                  <button type="button" onClick={handleEdit(`${cat._id}`)}>
+                  <button type="button" onClick={() => navigate(`/category/edit/${cat._id}`)}>
                     <RiEdit2Line size={24} />
                   </button>
                   <button

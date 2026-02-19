@@ -1,11 +1,14 @@
 import { getCategory } from "../../api/category.api";
 import { addCategory } from "../../api/category.api";
 import { useEffect, useState, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CategoryCreate = () => {
   const [parentId, setParentId] = useState("");
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
   const formRef = useRef()
 
   const getCategories = async () => {
@@ -23,9 +26,11 @@ const CategoryCreate = () => {
     const formData = new FormData(formRef.current)
     try {
       const res = await addCategory(formData)
-      console.log(res.data)
+      toast.success(res.data.message)
+      formRef.current.reset()
+      navigate('/category')
     } catch (error) {
-      console.log(error.response)
+      toast.error(error.response.data.message)
     }
    }
   return (
@@ -97,6 +102,7 @@ const CategoryCreate = () => {
           </div>
         </div>
       </form>
+      <ToastContainer />
     </>
   );
 };

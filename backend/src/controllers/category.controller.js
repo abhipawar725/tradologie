@@ -31,6 +31,21 @@ export const Fetch = async (req, res) => {
   }
 };
 
+export const FetchById = async (req, res) => {
+  try {
+    const {id} = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(401).json({message: "Invalid category id"})
+
+    const category = await Category.findById(id)
+    if(!category) return res.status(404).json({message: "Category not found"})
+
+    return res.status(200).json({category})  
+    } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "something went wrong" });
+  }
+};
+
 export const Create = async (req, res) => {
   try {
     const { name, parentId } = req.body;
