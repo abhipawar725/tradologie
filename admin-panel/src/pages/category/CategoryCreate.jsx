@@ -1,15 +1,16 @@
 import { getCategory } from "../../api/category.api";
-import { addCategory } from "../../api/category.api";
-import { useEffect, useState, useRef } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+// import { addCategory } from "../../api/category.api";
+import { useEffect, useState} from "react";
+// import { ToastContainer, toast } from "react-toastify";
+// import { useNavigate } from "react-router-dom";
+import CategoryForm from "../../components/category/CategoryForm";
 
 const CategoryCreate = () => {
-  const [parentId, setParentId] = useState("");
+  // const [parentId, setParentId] = useState("");
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate()
-  const formRef = useRef()
+  // const navigate = useNavigate()
+  // const formRef = useRef()
 
   const getCategories = async () => {
     const res = await getCategory({isActive: true});
@@ -21,21 +22,23 @@ const CategoryCreate = () => {
     getCategories();
   }, []);
 
-   const handleSubmit = async(e) => {
-    e.preventDefault()
-    const formData = new FormData(formRef.current)
-    try {
-      const res = await addCategory(formData)
-      toast.success(res.data.message)
-      formRef.current.reset()
-      navigate('/category')
-    } catch (error) {
-      toast.error(error.response.data.message)
-    }
-   }
+
+  //  const handleSubmit = async(e) => {
+  //   e.preventDefault()
+  //   const formData = new FormData(formRef.current)
+  //   try {
+  //     const res = await addCategory(formData)
+  //     toast.success(res.data.message)
+  //     formRef.current.reset()
+  //     navigate('/category')
+  //   } catch (error) {
+  //     toast.error(error.response.data.message)
+  //   }
+  //  }
   return (
     <>
-      <div className="flex items-center justify-between gap-5 mb-4">
+    <CategoryForm category={categories} />
+      {/* <div className="flex items-center justify-between gap-5 mb-4">
         <h1 className="text-xl">Add a new Category</h1>
         <button onClick={handleSubmit} className="px-4 py-2 capitalize text-white bg-primary rounded-md text-sm">
           Publish
@@ -102,7 +105,7 @@ const CategoryCreate = () => {
           </div>
         </div>
       </form>
-      <ToastContainer />
+      <ToastContainer /> */}
     </>
   );
 };
