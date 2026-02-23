@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { categorySchema } from "../../validations/categorySchema";
 import { generateSlug } from "../../hooks/useSlug";
@@ -7,6 +7,7 @@ import { addCategory, getCategory } from "../../api/category.api";
 import { generatePreview } from "../../hooks/usePreview";
 
 const CategoryForm = ({ category }) => {
+  const [imagePreview, setImagePreview] = useState(null)
   const {
     register,
     handleSubmit,
@@ -25,15 +26,20 @@ const CategoryForm = ({ category }) => {
         formData.append(key, data[key] ?? "");
       }
     });
-    // try {
-    //   const res = await addCategory(formData);
-    //   console.log(res.data);
-    // } catch (error) {
-    //   console.log(error.response);
-    // }
+    try {
+      const res = await addCategory(formData);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 
-
+  const handleImage = (e) => {
+    const file = e.target.files[0]
+    if(!file) return
+    const previewUrl = URL.createObjectURL(file)
+    setImagePreview(previewUrl)  
+  }
 
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
@@ -94,11 +100,16 @@ const CategoryForm = ({ category }) => {
                   type="file"
                   className="absolute top-0 left-0 w-full h-full opacity-0"
                   {...register("image", {
-                    onChange: (e) => 
+                    onChange: handleImage
                   })}
                 />
                 <p>Upload Image</p>
               </div>
+               {imagePreview && (
+                <div>
+                  <img src={imagePreview} alt="category" className="w-20" />
+                </div>
+               )}
               {errors.image && (
                 <p className="text-red-500">{errors.image.message}</p>
               )}

@@ -22,6 +22,7 @@ const Login = () => {
       form.reset();
       navigate("/");
     } catch (error) {
+      console.log(error.response)
       toast.error(error.response?.data.message || "Login failed");
       form.reset();
     } finally {
