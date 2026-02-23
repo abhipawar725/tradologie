@@ -10,8 +10,8 @@ export const categorySchema = yup.object({
   slug: yup
     .string()
     .trim()
-    .matches(/^[a-z0-9-]+$/, "Slug must be lowercase and hyphen separated")
-    .required("Slug is required"),
+    .required("Slug is required")
+    .matches(/^[a-z0-9-]+$/, "Slug must be lowercase and hyphen separated"),
 
   parentId: yup.string().nullable(),
 
