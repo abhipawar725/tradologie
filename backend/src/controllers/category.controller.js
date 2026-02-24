@@ -48,7 +48,7 @@ export const FetchById = async (req, res) => {
 
 export const Create = async (req, res) => {
   try {
-    const { name, parentId } = req.body;
+    const { name, parentId, shortDescription, isActive, showInHome } = req.body;
     if (!name || name.trim().length < 3) {
       return res.status(400).json({ message: "Invalid category name" });
     }
@@ -67,6 +67,9 @@ export const Create = async (req, res) => {
       name, 
       slug,
       image: req.file ? req.file?.filename : null,
+      shortDescription,
+      isActive,
+      showInHome,
       parentId: parentId || null,
     });
 

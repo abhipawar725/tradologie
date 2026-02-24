@@ -26,6 +26,11 @@ const categorySchema = new Schema(
     image: {
       type: String,
     },
+    shortDescription: {
+      type : String,
+      minlength: 10,
+      maxlength: 200
+    },
     isActive: {
       type: Boolean,
       default: true,
