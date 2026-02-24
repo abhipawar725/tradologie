@@ -2,6 +2,9 @@ import { getCategory } from "@/lib/category";
 import Link from "next/link";
 import Image from "next/image";
 
+const url = process.env.NEXT_PUBLIC_BASE_URL
+console.log(url)
+
 export const revalidate = 300;
 
 const Page = async () => {
@@ -25,14 +28,17 @@ const Page = async () => {
           className="flex flex-col rounded-xl shadow-md p-4"
         >
           <div className="relative w-full h-40 mb-4">
+            {cat.image && (
             <Link href={`/category/${cat.slug}`}>
               <Image
-                src={cat.image || "/placeholder.jpg"}
+                src={`${url}/uploads/${cat.image}`}
                 alt={cat.name}
-                fill
+                width={200}
+                height={50}
                 className="object-cover rounded-xl"
               />
             </Link>
+            )}
           </div>
 
           {/* Content */}
