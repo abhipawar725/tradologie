@@ -43,6 +43,12 @@ export const categorySchema = yup.object({
 
     return true;
   }),
+
+  shortDescription: yup
+   .string()
+   .min(10, 'min 10 characters')
+   .max(200, 'max 200 characters'),
+   
   isActive: yup.boolean(),
 
   showInHome: yup.boolean(),

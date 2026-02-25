@@ -65,12 +65,12 @@ export const Create = async (req, res) => {
 
     const category = await Category.create({
       name, 
+      parentId: parentId || null,
       slug,
       image: req.file ? req.file?.filename : null,
       shortDescription,
       isActive,
       showInHome,
-      parentId: parentId || null,
     });
 
     return res.status(201).json({ message: "Category created", category });

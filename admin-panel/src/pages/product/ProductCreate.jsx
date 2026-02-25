@@ -1,14 +1,7 @@
-import Quill from "quill";
-import "quill/dist/quill.snow.css";
+
 import { useEffect, useRef } from "react";
 
 const ProductCreate = () => {
-   const editorRef = useRef(null);
-    useEffect(() => {
-    const quill = new Quill(editorRef.current, {
-      theme: "snow",
-    });
-  }, []);
   return (
     <>
       <div className="flex items-center justify-between gap-5 mb-4">

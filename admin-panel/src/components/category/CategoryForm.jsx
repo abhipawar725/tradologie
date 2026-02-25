@@ -1,17 +1,22 @@
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState, useRef } from "react";
+import { Controller } from "react-hook-form";
+import { Editor } from "@tinymce/tinymce-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { categorySchema } from "../../validations/categorySchema";
 import { generateSlug } from "../../hooks/useSlug";
 import { addCategory, getCategory } from "../../api/category.api";
-import { generatePreview } from "../../hooks/usePreview";
 
 const CategoryForm = ({ category }) => {
-  const [imagePreview, setImagePreview] = useState(null)
+  const editorkey = import.meta.env.VITE_EDITOR_TINYMCE;
+  const editorRef = useRef(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const {
     register,
     handleSubmit,
     setValue,
+    control,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(categorySchema),
@@ -35,11 +40,13 @@ const CategoryForm = ({ category }) => {
   };
 
   const handleImage = (e) => {
-    const file = e.target.files[0]
-    if(!file) return
-    const previewUrl = URL.createObjectURL(file)
-    setImagePreview(previewUrl)  
-  }
+    const file = e.target.files[0];
+    if (!file) return;
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview(previewUrl);
+  };
+
+  console.log(watch("shortDescription"));
 
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
@@ -62,19 +69,13 @@ const CategoryForm = ({ category }) => {
                     },
                   })}
                 />
-                {errors.name && (
-                  <p className="text-red-500">{errors.name.message}</p>
-                )}
+                {errors.name && <p className="text-red-500">{errors.name.message}</p>}
               </div>
               <div className="flex flex-col gap-1">
                 <label htmlFor="parent-cat" className="text-sm">
                   Parent Category
                 </label>
-                <select
-                  id="parent-cat"
-                  className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0"
-                  {...register("parentId")}
-                >
+                <select id="parent-cat" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" {...register("parentId")}>
                   <option value="">Select Category</option>
                   {category.map((cat) => (
                     <option key={cat._id} value={cat._id}>
@@ -82,9 +83,57 @@ const CategoryForm = ({ category }) => {
                     </option>
                   ))}
                 </select>
-                {errors.parentId && (
-                  <p className="text-red-500">{errors.parentId.message}</p>
-                )}
+                {errors.parentId && <p className="text-red-500">{errors.parentId.message}</p>}
+              </div>
+              <div className="flex flex-col gap-1">
+                <label htmlFor="is-active" className="text-sm">
+                  Activate
+                </label>
+                <div className="relative w-11 h-5">
+                  <label className="absolute inset-0 z-10 opacity-0 peer ...">
+                    <input type="checkbox" {...register("isActive")} />
+                  </label>
+                  <div className="h-full w-full relative bg-gray-300 rounded-full peer-has-checked:bg-green-500 transition-colors duration-300"></div>
+                  <div className="absolute -translate-y-1/2 top-1/2 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-has-checked:translate-x-5"></div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label htmlFor="show-in-home" className="text-sm">
+                  Show in Home
+                </label>
+                <div className="relative w-11 h-5">
+                  <label className="absolute inset-0 z-10 opacity-0 peer ...">
+                    <input type="checkbox" {...register("showInHome")} />
+                  </label>
+                  <div className="h-full w-full relative bg-gray-300 rounded-full peer-has-checked:bg-green-500 transition-colors duration-300"></div>
+                  <div className="absolute -translate-y-1/2 top-1/2 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-has-checked:translate-x-5"></div>
+                </div>
+              </div>
+              <div className="col-span-2">
+                <Controller
+                  name="shortDescription"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Editor
+                      apiKey={editorkey}
+                      value={field.value}
+                      onEditorChange={(content) => field.onChange(content)}
+                      init={{
+                        height: 400,
+                        menubar: true,
+                        plugins: ["advlist", "anchor", "autolink", "autosave", "charmap", "code", "codesample", "directionality", "emoticons", "fullscreen", "help", "image", "importcss", "insertdatetime", "link", "lists", "media", "nonbreaking", "pagebreak", "preview", "quickbars", "save", "searchreplace"],
+                        toolbar:  "undo redo | \
+      blocks fontfamily fontsize | bold italic underline strikethrough | \
+      align numlist bullist | link image | table media | \
+      lineheight outdent indent | forecolor backcolor removeformat | \
+      charmap emoticons | code fullscreen preview | save print | \
+      pagebreak anchor codesample | ltr rtl",
+                        menubar: "file edit view insert format tools table help code",
+                      }}
+                    />
+                  )}
+                ></Controller>
               </div>
             </div>
           </div>
@@ -100,19 +149,17 @@ const CategoryForm = ({ category }) => {
                   type="file"
                   className="absolute top-0 left-0 w-full h-full opacity-0"
                   {...register("image", {
-                    onChange: handleImage
+                    onChange: handleImage,
                   })}
                 />
                 <p>Upload Image</p>
               </div>
-               {imagePreview && (
+              {imagePreview && (
                 <div>
                   <img src={imagePreview} alt="category" className="w-20" />
                 </div>
-               )}
-              {errors.image && (
-                <p className="text-red-500">{errors.image.message}</p>
               )}
+              {errors.image && <p className="text-red-500">{errors.image.message}</p>}
             </div>
           </div>
         </div>
