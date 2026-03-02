@@ -36,7 +36,7 @@ export const FetchById = async (req, res) => {
     const {id} = req.params
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(401).json({message: "Invalid category id"})
 
-    const category = await Category.findById(id)
+    const category = await Category.findById(id).populate('parentId', 'name')
     if(!category) return res.status(404).json({message: "Category not found"})
 
     return res.status(200).json({category})  
