@@ -22,9 +22,9 @@ const CategoryForm = ({ category }) => {
   } = useForm({
     resolver: yupResolver(categorySchema),
     defaultValues: {
-      isActive: true,
+      isActive: false,
       showInHome: false,
-    }
+    },
   });
 
   const submitHandler = useCallback(
@@ -56,7 +56,7 @@ const CategoryForm = ({ category }) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setImagePreview((prev) => {
-      if(prev) URL.revokeObjectURL(prev)
+      if (prev) URL.revokeObjectURL(prev);
       return URL.createObjectURL(file);
     });
   }, []);
@@ -75,7 +75,9 @@ const CategoryForm = ({ category }) => {
     <>
       <div className="flex items-center justify-between gap-5 mb-4">
         <h1 className="text-xl">Add a new Category</h1>
-        <button type="submit" form="category-form" disabled={loading} className="px-4 py-2 capitalize text-white bg-primary rounded-md text-sm" >{loading ? 'Submitting...' : 'Submit'}</button>
+        <button type="submit" form="category-form" disabled={loading} className="px-4 py-2 capitalize text-white bg-primary rounded-md text-sm">
+          {loading ? "Submitting..." : "Submit"}
+        </button>
       </div>
       <form id="category-form" onSubmit={handleSubmit(submitHandler)}>
         <div className="flex items-start gap-5">
@@ -83,14 +85,11 @@ const CategoryForm = ({ category }) => {
             <div className="bg-white p-4 shadow-card rounded-lg">
               <div className="grid grid-cols-2 gap-5">
                 <div className="flex flex-col gap-1">
-                  <FormInput 
-                  label="Category Name"
-                  name="name"
-                  type="text" 
-                  register={register('name')} 
-                  errors={errors} 
-                  onChange={(e) => handleNameChange(e.target.value)}
-                  />
+                  <label htmlFor="name" className="text-sm">
+                    Category Name
+                  </label>
+                  <input type="text" id="name" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" {...register("name", { onChange: (e) => handleNameChange(e.target.value) })} />
+                  {errors?.[name] && <p className="text-red-500">{errors[name]?.message}</p>}
                 </div>
                 <div className="flex flex-col gap-1">
                   <label htmlFor="parent-cat" className="text-sm">
@@ -106,8 +105,8 @@ const CategoryForm = ({ category }) => {
                   </select>
                   {errors.parentId && <p className="text-red-500">{errors.parentId.message}</p>}
                 </div>
-                <Toggle label="Activate" register={register('isActive')} />
-                <Toggle label="Show In Home" register={register('showInHome')} />  
+                <Toggle label="Activate" register={register("isActive")} />
+                <Toggle label="Show In Home" register={register("showInHome")} />
                 <div className="flex flex-col gap-1 col-span-2">
                   <label htmlFor="short-desc" className="text-sm">
                     Short Desciption

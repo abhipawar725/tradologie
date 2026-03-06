@@ -27,18 +27,18 @@ const categorySchema = new Schema(
       type: String,
     },
     shortDescription: {
-      type : String,
+      type: String,
       minlength: 10,
-      maxlength: 200
+      maxlength: 200,
     },
     isActive: {
       type: Boolean,
-      default: true,
+      default: false,
       index: true,
     },
     showInHome: {
-        type: Boolean,
-      default: true,
+      type: Boolean,
+      default: false,
       index: true,
     },
   },
