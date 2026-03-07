@@ -9,12 +9,10 @@ export const getCategoryById = (id) => {
 };
 
 export const addCategory = (data) => {
-  console.log(data);
   return api.post("/api/category/", data);
 };
 
 export const editCategory = (id, data) => {
-  console.log(data);
   return api.put(`/api/category/${id}`, data);
 };
 
