@@ -7,6 +7,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { categorySchema } from "../../validations/categorySchema";
 import { editCategory } from "../../api/category.api";
 import { generateSlug } from "../../hooks/useSlug";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CategoryEdit = () => {
   const url = import.meta.env.VITE_BASE_URL;
@@ -15,8 +17,7 @@ const CategoryEdit = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
-
-
+  const navigate = useNavigate()
 
   const {
     register,
@@ -37,10 +38,17 @@ const CategoryEdit = () => {
       Object.keys(data).forEach((key) => {
         if(key === 'image' && data.image?.[0]){
           formData.append('image', data.image[0])
+        }else{
+          formData.append(key, data[key] ?? '');
         }
       })
+      const res = await editCategory(id, formData)
+      toast.success(res?.data?.message)
+      navigate("/category") 
     } catch (error) {
-      
+      console.log(error.response)
+    }finally{
+      setLoading(false)
     }
   }
 

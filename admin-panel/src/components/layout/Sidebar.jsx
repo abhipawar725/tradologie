@@ -15,7 +15,6 @@ const nav = [
     children: [
       { label: "category list", url: "/category" },
       { label: "category add", url: "/category/add" },
-      { label: "category edit", url: "/category/edit/:id" },
     ],
   },
   {
