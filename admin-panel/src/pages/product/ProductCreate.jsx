@@ -21,6 +21,7 @@ const ProductCreate = () => {
   })
 
   console.log(category)
+  console.log(leafCategory)  
 
   useEffect(() => {
     getCategoryData();
