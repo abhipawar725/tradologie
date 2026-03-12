@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { navigation } from "@/data/navigation";
 import NavItem from "./NavItem";
-import ProductMegaMenu from "./ProductMegaMenu";
 
 const Header = () => {
   return (

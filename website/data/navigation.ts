@@ -1,18 +1,18 @@
+type BaseNavItem = {
+  label: string;
+}
+
 type NavChild = {
   label: string;
   url: string;
 };
 
-export type NavItem = {
-  label: string;
-  url?: string;
-  hasChild?: NavChild[] | string;
-};
+export type NavItem = | (BaseNavItem & { url: string }) | (BaseNavItem & { hasChild: NavChild[] }) | (BaseNavItem & { mega : true })
 
 export const navigation: NavItem[] = [
   {
     label: "product",
-    hasChild: "mega",
+    mega: true,
   },
   {
     label: "media",

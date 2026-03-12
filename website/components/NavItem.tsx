@@ -10,7 +10,7 @@ type Props = {
 
 const NavItem = ({ item }: Props) => {
   const [open, setOpen] = useState(false);
-  if (item.url) {
+  if ('url' in item) {
     return (
       <li>
         <Link href={item.url}>{item.label}</Link>
@@ -19,13 +19,13 @@ const NavItem = ({ item }: Props) => {
   }
 
   return (
-    <li className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+    <li className={'mega' in item ? 'static' : 'relative'} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
       <button type="button" className="capitalize font-medium">
         {item.label}
       </button>
-      {open && item.hasChild === "mega" && <ProductMegaMenu />}
+      {open && 'mega' in item && <ProductMegaMenu />}
 
-      {open && Array.isArray(item.hasChild) && (
+      {open && 'hasChild' in item  && (
         <ul className="absolute top-full bg-white shadow-lg rounded-lg p-4 w-52 z-10">
           {item.hasChild?.map((child: any) => (
             <li key={child.label} className="py-1">
