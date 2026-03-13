@@ -24,10 +24,32 @@ export const productSchema = yup.object({
     image: yup
     .mixed()
     .required('Image is required')
-    .test('fileSize', 'File size is too large(max 5mb)', (value) => {
-        return !value | (value && value.size <= FILE_SIZE)
+    .test("fileSize", "Image too large (max 2MB)", (value) => {
+      if (!value) return true;
+      if (typeof value === "string") return true;
+      if (value instanceof FileList && value.length > 0) {
+        return value[0].size <= 5 * 1024 * 1024;
+      }
+      return true;
     })
-    .test('fileFormat', 'Unsupported file format', (value) => {
-        return !value | (value && SUPPORT_FORMAT.includes(value.type))
-    })    
+    .test("fileType", "Unsupported file format", (value) => {
+      if (!value) return true;
+      if (typeof value === "string") return true;
+      if (value instanceof FileList && value.length > 0) {
+        return ["image/jpeg", "image/png", "image/webp"].includes(value[0].type);
+      }
+      return true;
+    }),
+    
+    shortDescription: yup
+    .string()
+    .min(10, 'Description should be at least 10 characters')
+    .max(200, 'Description should not exceed 200 characters')
+    .required('Short description is required'),
+    
+    isActive: yup
+    .boolean(),
+
+    showInHome: yup
+    .boolean()
 })

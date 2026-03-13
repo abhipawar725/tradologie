@@ -30,6 +30,7 @@ const categorySchema = new Schema(
       type: String,
       minlength: 10,
       maxlength: 200,
+      required: true,
     },
     isActive: {
       type: Boolean,

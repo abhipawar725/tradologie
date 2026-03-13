@@ -29,25 +29,10 @@ const productSchema = new Schema(
       type: String,
       required: true
     }],
-    minQty: {
-      type: Number,
-      min: 1,
-      required: true
-    },
-    type: {
-      type: String,
-      enum: ["vegetarian", "non-vegetarian"],
-      required: true,
-    },
     shortDescription: {
       type: String,
       minlength: 10,
       maxlength: 200
-    },
-    description: {
-      type: String,
-      minlength: 50,
-      maxlength: 5000
     },
     isActive: {
       type: Boolean,

@@ -7,7 +7,6 @@ import { addCategory } from "../../api/category.api";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Toggle from "../common/Toggle";
-import FormInput from "../common/FormInput";
 
 const CategoryForm = ({ category }) => {
   const navigate = useNavigate();
@@ -71,6 +70,9 @@ const CategoryForm = ({ category }) => {
     const slug = generateSlug(value);
     setValue("slug", slug, { shouldValidate: true });
   };
+
+   
+
   return (
     <>
       <div className="flex items-center justify-between gap-5 mb-4">
