@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getCategory } from "../../api/category.api";
+import { useForm } from "react-hook-form";
 
 const ProductCreate = () => {
+  const {handleSubmit, register} = useForm()
   const [category, setCategory] = useState(null);
   const [loading, setLoading] = useState(false);
   const getCategoryData = async () => {
@@ -20,19 +22,21 @@ const ProductCreate = () => {
     return !hasChild;
   })
 
-  console.log(category)
-  console.log(leafCategory)  
-
   useEffect(() => {
     getCategoryData();
   }, []);
+
+   const onSubmit = (data) => {
+     console.log(data)
+   }
+
   return (
     <>
       <div className="flex items-center justify-between gap-5 mb-4">
         <h1 className="text-xl">Add a new Product</h1>
-        <button className="px-4 py-2 capitalize text-white bg-primary rounded-md text-sm">publish product</button>
+        <button form="product-add" className="px-4 py-2 capitalize text-white bg-primary rounded-md text-sm">publish product</button>
       </div>
-      <form>
+      <form id="product-add" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex items-start gap-5">
           <div className="basis-8/12">
             <div className="bg-white p-4 shadow-card rounded-lg">
@@ -41,7 +45,7 @@ const ProductCreate = () => {
                   <label htmlFor="pro_name" className="text-sm">
                     Product Name
                   </label>
-                  <input type="text" id="pro_name" name="name" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" required />
+                  <input type="text" id="pro_name" name="name" {...register('name')} className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" />
                 </div>
                 <div className="flex flex-col gap-1">
                   <label htmlFor="type" className="text-sm">
@@ -109,19 +113,19 @@ const ProductCreate = () => {
                   <label htmlFor="min-quantity" className="text-sm">
                     Minimun Order Quantity
                   </label>
-                  <input type="text" id="min-quantity" name="minQty" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" required />
+                  <input type="text" id="min-quantity" name="minQty" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" />
                 </div>
                 <div className="flex flex-col gap-1">
                   <label htmlFor="bag-size" className="text-sm">
                     Bag Size
                   </label>
-                  <input type="text" id="bag-size" name="bagSize" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" required />
+                  <input type="text" id="bag-size" name="bagSize" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" />
                 </div>
                 <div className="flex flex-col gap-1">
                   <label htmlFor="bag-type" className="text-sm">
                     Bag Type
                   </label>
-                  <input type="text" id="bag-type" name="bagType" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" required />
+                  <input type="text" id="bag-type" name="bagType" className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" />
                 </div>
               </div>
             </div>
