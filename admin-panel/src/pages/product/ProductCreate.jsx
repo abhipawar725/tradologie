@@ -13,7 +13,6 @@ const ProductCreate = () => {
     handleSubmit,
     register,
     setValue,
-    watch,
     formState: { errors },
   } = useForm({ resolver: yupResolver(productSchema) });
   const [category, setCategory] = useState(null);

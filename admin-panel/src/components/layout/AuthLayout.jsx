@@ -7,7 +7,7 @@ const AuthLayout = () => {
     <div className="flex min-h-screen">
       <Sidebar />
 
-      <main className="flex-1 ml-64">
+      <main className="flex-1 ml-64" style={{width: 'calc(100% - 256px)'}}>
         <div className="backdrop-blur-xs px-5 pt-5 sticky top-0">
           <div className="bg-white w-full py-2 px-6 rounded-lg shadow-card flex items-center justify-between">
             <RiSearch2Line size={24} />
