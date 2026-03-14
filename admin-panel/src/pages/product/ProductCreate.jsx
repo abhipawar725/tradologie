@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { generateSlug } from "../../hooks/useSlug";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { productSchema } from "../../validations/productSchema";
+import {addProduct} from "../../api/product.api"
+import { ToastContainer, toast } from "react-toastify";
+
 
 const ProductCreate = () => {
   const {
@@ -58,7 +61,7 @@ const ProductCreate = () => {
     setValue("slug", slug);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const formData = new FormData()
     Object.keys(data).forEach((key) => {
       if(key === 'image' && data.image?.[0]){
@@ -68,7 +71,12 @@ const ProductCreate = () => {
       }
     })
 
-    
+     try {
+      const res = await addProduct(formData)
+      toast.success(res.data.message)
+     } catch (error) {
+      toast.error(error.response.message)
+     }
   };
 
   return (
@@ -157,6 +165,7 @@ const ProductCreate = () => {
           </div>
         </div>
       </form>
+      <ToastContainer position="top-right" />
     </>
   );
 };

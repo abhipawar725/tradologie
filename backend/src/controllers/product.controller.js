@@ -15,9 +15,10 @@ export const Fetch = async (req, res) => {
 
 export const Create = async (req, res) => {
   try {
-    const { name, category, minQty, type, shortDescription, description } =
+    const { name, category, slug, shortDescription, isActive, showInHome } =
       req.body;
-    if (!name || !category || !minQty || !type) {
+      req.file;
+    if (!name || !category) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -31,21 +32,16 @@ export const Create = async (req, res) => {
     if (!isCategory)
       return res.status(404).json({ message: "Category not found" });
 
-    const images = req.files?.map((file) => file.filename);
+    const image = req.file ? req.file?.filename : null;
 
-    if (!images || images.length === 0)
-      return res
-        .status(400)
-        .json({ message: "At least one image is required" });
     const product = await Product.create({
       name,
       slug: slugify(name, { lower: true, strict: true }),
       category,
-      images,
-      minQty: Number(minQty),
-      type,
+      image,
       shortDescription,
-      description,
+      isActive,
+      showInHome
     });
 
     return res
@@ -62,7 +58,7 @@ export const Create = async (req, res) => {
 export const Update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, category, minQty, type, shortDescription, description } =
+    const { name, category, slug, shortDescription } =
       req.body;
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(400).json({ message: "Invalid product ID" });

@@ -25,10 +25,10 @@ const productSchema = new Schema(
       index: true,
       required: true
     },
-    images: [{
+    image: {
       type: String,
       required: true
-    }],
+    },
     shortDescription: {
       type: String,
       minlength: 10,
