@@ -3,10 +3,12 @@ import { deleteProduct } from "../../api/product.api";
 import { useEffect, useState } from "react";
 import { RiEdit2Line, RiDeleteBin2Line} from "@remixicon/react";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ProductList = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
   
   const getProductsData = async() => {
     try {
@@ -71,7 +73,7 @@ const ProductList = () => {
               <td className="p-2 border-b border-slate-200">{item.shortDescription}</td>
               <td className="p-2 border-b border-slate-200">{item.createdAt}</td>
               <td className="p-2 border-b border-slate-200">
-                 <button type="button" className="cursor-pointer" onClick={() => alert(item._id)}>
+                 <button type="button" className="cursor-pointer" onClick={() => navigate(`/product/edit/${item._id}`)}>
                     <RiEdit2Line size={24} />
                   </button>
                   <button type="button" className="cursor-pointer" onClick={() => handleDelete(item._id)}>

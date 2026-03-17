@@ -13,6 +13,18 @@ export const Fetch = async (req, res) => {
   }
 };
 
+export const FetchById = async (req, res) => {
+  try{
+    const {id} = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(401).json({message: 'Invalid Product ID'})
+    const product = await Product.findById(id)
+    if(!product) return res.status(404).json({message: "Product not found"})  
+     return res.status(200).json({product}) 
+  }catch(error){
+    return res.status(500).json({message: error.message})
+  }
+}
+
 export const Create = async (req, res) => {
   try {
     const { name, category, slug, shortDescription, isActive, showInHome } =

@@ -83,7 +83,7 @@ const ProductCreate = () => {
       <div className="flex items-center justify-between gap-5 mb-4">
         <h1 className="text-xl">Add a new Product</h1>
         <button form="product-add" className="px-4 py-2 capitalize text-white bg-primary rounded-md text-sm">
-          publish product
+          Publish Product
         </button>
       </div>
       <form id="product-add" onSubmit={handleSubmit(onSubmit)}>
