@@ -3,11 +3,20 @@ import { getProductById } from "../../api/product.api";
 import { updateProduct } from "../../api/product.api";
 import { useParams } from "react-router-dom";
 import { getCategory } from "../../api/category.api";
+import { useForm } from "react-hook-form";
+import { generateSlug } from "../../hooks/useSlug";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ProductEdit = () => {
+  const url = import.meta.env.VITE_BASE_URL
+  const [imagePreview, setImagePreview] = useState(null)
   const [productData, setProductData] = useState(null)
   const [category, setCategory] = useState([])
   const {id} = useParams()
+  const navigate = useNavigate()
+
+  const {setValue,watch, handleSubmit, register, formState: {errors}} = useForm()
 
   const getProductsData = async() => {
     try{
@@ -37,6 +46,49 @@ const ProductEdit = () => {
     return !hasChild;
   })
 
+  useEffect(() => {
+   if(productData){
+    setValue('name', productData?.name || '')
+    setValue('slug', productData?.slug || '')
+    setValue('category', productData?.category?._id || '')
+    setValue('isActive', productData?.isActive || false)
+    setValue('showInHome', productData?.showInHome || false)
+    setValue('shortDescription', productData?.shortDescription || '')
+    setValue('image', productData?.image || null)
+    setImagePreview(`${url}/uploads/${productData?.image}`)
+   }
+  },[productData, setValue])
+
+  const updatedSlug = (value) => {
+    const slug = generateSlug(value)
+    setValue('slug', slug, {shouldValidate: true})
+  }
+
+  const updateImage = (file) => {
+    if(!file) return;
+    setImagePreview(URL.createObjectURL(file))
+  }
+
+  const submitHandler = async (data) => {
+    console.log(data)
+    const formData = new FormData()
+      Object.keys(data).forEach((key) => {
+        if(key === 'image' && data.image?.[0]){
+          formData.append('image', data.image[0])  
+        }else{
+          formData.append(key, data[key] ?? '')
+        }
+      })
+      try {
+        const res = await updateProduct(id, formData)
+        toast.success(res.data.message)
+        navigate('/product')
+      } catch (error) {
+        toast.error(error?.response?.data?.message)
+      }
+  }
+
+
   return (
     <>
       <div className="flex items-center justify-between gap-5 mb-4">
@@ -45,7 +97,7 @@ const ProductEdit = () => {
           publish Product
         </button>
       </div>
-     <form id="product-add">
+     <form id="product-add" onSubmit={handleSubmit(submitHandler)}>
         <div className="flex items-start gap-5">
           <div className="basis-8/12">
             <div className="bg-white p-4 shadow-card rounded-lg">
@@ -54,29 +106,28 @@ const ProductEdit = () => {
                   <label htmlFor="pro_name" className="text-sm">
                     Product Name
                   </label>
-                  <input type="text" id="pro_name" value={productData?.name} className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" />
-                  {/* {errors?.name && <p className="text-red-500 text-sm">{errors?.name?.message}</p>} */}
+                  <input type="text" id="pro_name" {...register('name', {onChange: (e) => updatedSlug(e.target.value)})} className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0" />
+                  {errors?.name && <p className="text-red-500 text-sm">{errors?.name?.message}</p>}
                 </div>
                 <div className="flex flex-col gap-1">
                   <label htmlFor="category" className="text-sm">
                     Category
                   </label>
-                  <select name="categoryId" id="category" value={productData?.category} className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0">
-                    <option value="">Select Category</option>
+                  <select name="categoryId" id="category" {...register('category')} className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0">
                     {leafCategory?.map((cat) => (
                       <option key={cat._id} value={cat._id}>
                         {cat.name}
                       </option>
                     ))}
                   </select>
-                  {/* {errors?.category && <p className="text-red-500 text-sm">{errors?.category?.message}</p>} */}
+                  {errors?.category && <p className="text-red-500 text-sm">{errors?.category?.message}</p>}
                 </div>
                 <div className="flex flex-col gap-1">
                   <label htmlFor="isActive" className="text-sm">
                     Activate
                   </label>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" value={productData?.isActive} />
+                    <input type="checkbox" className="sr-only peer" {...register('isActive')} />
                     <div className="h-6 w-11 bg-gray-300 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
                     <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
                   </label>
@@ -86,7 +137,7 @@ const ProductEdit = () => {
                     Show in Home
                   </label>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" value={productData?.showInHome} />
+                    <input type="checkbox" className="sr-only peer" {...register('showInHome')} />
                     <div className="h-6 w-11 bg-gray-300 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
                     <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5"></div>
                   </label>
@@ -95,9 +146,8 @@ const ProductEdit = () => {
                   <label htmlFor="short-description" className="text-sm">
                     Short Description
                   </label>
-                  <textarea rows={3} id="short-description" value={productData?.shortDescription} className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0"></textarea>
-                  {/* {errors?.shortDescription && <p className="text-red-500 text-sm">{errors?.shortDescription?.message}</p>} */}
-                  <input type="hidden" value={productData?.slug} />
+                  <textarea rows={3} id="short-description" {...register('shortDescription')} className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0"></textarea>
+                  {errors?.shortDescription && <p className="text-red-500 text-sm">{errors?.shortDescription?.message}</p>}
                 </div>
               </div>
             </div>
@@ -108,20 +158,21 @@ const ProductEdit = () => {
                 <label htmlFor="product-image" className="text-sm">
                   Product Image
                 </label>
-                {/* <div className="flex justify-center items-center relative w-full rounded-md cursor-pointer border-dashed border border-slate-200 text-sm px-3 py-2 outline-0 overflow-hidden h-20">
-                  <input type="file" value={productData?.image} className="absolute top-0 left-0 w-full h-full opacity-0" onChange={() => {}}/>
+                <div className="flex justify-center items-center relative w-full rounded-md cursor-pointer border-dashed border border-slate-200 text-sm px-3 py-2 outline-0 overflow-hidden h-20">
+                  <input type="file" className="absolute top-0 left-0 w-full h-full opacity-0" {...register('image', {onChange: (e) => updateImage(e.target.files[0])})} />
                   <p>Upload Image</p>
-                </div> */}
-                {/* {errors?.image && <p className="text-red-500 text-sm">{errors?.image?.message}</p>}
+                </div>
                 {imagePreview && (
                   <div>
                     <img src={imagePreview} alt="image" className="w-20" />
                   </div>
-                )} */}
+                )}
+                {errors?.image && <p className="text-red-500 text-sm">{errors?.image?.message}</p>}
               </div>
             </div>
           </div>
         </div>
+        <input type="hidden" {...register('slug')} />
       </form> 
       {/* <ToastContainer position="top-right" /> */}
     </>

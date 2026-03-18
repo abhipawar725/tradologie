@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { productSchema } from "../../validations/productSchema";
 import {addProduct} from "../../api/product.api"
 import { ToastContainer, toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 
 const ProductCreate = () => {
   const {
@@ -18,12 +18,14 @@ const ProductCreate = () => {
   const [category, setCategory] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
   const getCategoryData = async () => {
     try {
       setLoading(true);
       const res = await getCategory();
       setCategory(res.data.data.categories);
       setLoading(false);
+      navigate('/product/list')
     } catch (error) {
       console.log(error?.response);
     }
@@ -138,7 +140,6 @@ const ProductCreate = () => {
                   </label>
                   <textarea rows={3} id="short-description" {...register("shortDescription")} className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0"></textarea>
                   {errors?.shortDescription && <p className="text-red-500 text-sm">{errors?.shortDescription?.message}</p>}
-                  <input type="hidden" {...register("slug")} />
                 </div>
               </div>
             </div>
@@ -163,6 +164,7 @@ const ProductCreate = () => {
             </div>
           </div>
         </div>
+        <input type="hidden" {...register("slug")} />
       </form>
       <ToastContainer position="top-right" />
     </>

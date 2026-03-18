@@ -12,7 +12,8 @@ export const addProduct = (data) => {
   return api.post('/api/product', data)
 }
 
-export const updateProduct = (id,data) => {
+export const updateProduct = (id, data) => {
+  console.log(id, data)
   return api.put(`/api/product/${id}`, data)
 }
 

@@ -136,7 +136,6 @@ const CategoryEdit = () => {
                     Parent Category
                   </label>
                   <select id="parent-cat" {...register('parentId')} className="w-full rounded-md border border-slate-200 text-sm px-3 py-2 outline-0">
-                    <option value=''>Select Category</option>
                     {categories.map((cat) => (
                       <option key={cat._id} value={cat._id}>
                         {cat.name}

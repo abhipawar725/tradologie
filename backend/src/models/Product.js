@@ -21,7 +21,6 @@ const productSchema = new Schema(
       trim: true,
       lowercase: true,
       unique: true,
-      immutable: true,
       index: true,
       required: true
     },
