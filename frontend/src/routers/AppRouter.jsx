@@ -7,6 +7,7 @@ import Contact from "../pages/Contact";
 import CategoryListing from "../pages/CategoryListing";
 import ProductListing from "../pages/ProductListing";
 import ProductDetail from "../pages/ProductDetail";
+import NotFound from "../pages/NotFound";
 
 const AppRouter = () => {
   return (
@@ -20,6 +21,7 @@ const AppRouter = () => {
           <Route path="/products/:slug" element={<ProductDetail />} />
           <Route path="/category" element={<CategoryListing />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </BrowserRouter>
