@@ -31,7 +31,7 @@ export const FetchBySlug = async (req, res) => {
     if(!slug) return res.status(400).json({message: 'Slug is required'})
 
     const product = await Product.findOne({
-      slug: slug.toLowerCase()
+      slug: slug.trim().toLowerCase()
     })
     .select("-__v")
     .lean();
