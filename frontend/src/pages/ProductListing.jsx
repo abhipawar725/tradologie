@@ -1,28 +1,29 @@
-import React,{useState, useEffect} from 'react'
+import React, { useState, useEffect } from "react";
+import { getProducts } from "../services/productService";
+import ProductCard from "../components/product/ProductCard";
 
 const ProductListing = () => {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState([]);
 
-  const getProductData = async() => {
+  const getProductData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/product", {withCredentials: true})
-      console.log(res.data.products)
-      setProducts(res.data.products)
+      const res = await getProducts();
+      setProducts(res.data.products);
     } catch (error) {
-      console.log(error.response)
+      console.log(error.response);
     }
-  } 
+  };
   useEffect(() => {
-   getProductData()
-  },[])
+    getProductData();
+  }, []);
 
   return (
     <>
-    {products?.map((item) => (
-     <div key={item._id}>{item.name}</div> 
-    ))}
+      {products?.map((item) => (
+        <ProductCard key={item._id} image={item.image} title={item.name} slug={item.slug} />
+      ))}
     </>
-  )
-}
+  );
+};
 
-export default ProductListing
+export default ProductListing;
