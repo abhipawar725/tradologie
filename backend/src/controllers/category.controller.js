@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Category from "../models/Category.js";
+import Product from "../models/Product.js"
 import slugify from "slugify";
 
 export const Fetch = async (req, res) => {
@@ -45,6 +46,25 @@ export const FetchById = async (req, res) => {
     return res.status(500).json({ message: "something went wrong" });
   }
 };
+
+export const FetchBySlug = async (req, res) => {
+  try {
+    const {slug} = req.params
+    if(!slug) return res.status(400).json({message: 'Slug is required'})
+    
+    const category = await Category.findOne({slug: slug.trim().toLowerCase()}).select("-__v").lean()
+    if(!category) return res.status(404).json({message: "Category not found"})
+     
+    const childCategory = await Category.find({'parentId': category._id}).select("-__v").lean() 
+    if(childCategory.length > 0) return res.status(200).json(childCategory)    
+      
+    const product = await Product.find({category: category._id})   
+      
+    return res.status(200).json(product)
+  } catch (error) {
+    return res.status(500).json({message: error.message})
+  }
+}
 
 export const Create = async (req, res) => {
   try {
