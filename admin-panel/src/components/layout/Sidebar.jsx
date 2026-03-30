@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { RiCheckboxBlankCircleLine } from "@remixicon/react";
 import { RiArrowRightSLine, RiArrowDownSLine } from "@remixicon/react";
 import { useState } from "react";
+import { useThemeContext } from "../../context/ThemeContext";
 
 const nav = [
   {
@@ -27,6 +28,9 @@ const nav = [
   },
 ];
 const Sidebar = () => {
+  const {theme, setTheme} = useThemeContext()
+  console.log(theme)
+  console.log(setTheme)
   const [openMenu, setOpenMenu] = useState(null);
   const navigate = useNavigate();
   const logout = async () => {
@@ -45,7 +49,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <aside className="w-64 bg-white shadow-soft fixed top-0 h-screen overflow-auto">
+      <aside className="w-64 bg-white dark:bg-slate-700 shadow-soft fixed top-0 h-screen overflow-auto">
         <div className="bg-white p-3">
           {/* <img src="/images/logo.webp" alt="logo" className="w-[256px]" /> */}
         </div>
@@ -80,6 +84,8 @@ const Sidebar = () => {
             ))}
           </ul>
         </nav>
+        <button type="button" onClick={() => setTheme("dark")}>dark</button>
+        <button type="button" onClick={() => setTheme("light")}>light</button>
         <Link onClick={logout}>Logout</Link>
       </aside>
       <ToastContainer position="top-center" autoClose={3000} />

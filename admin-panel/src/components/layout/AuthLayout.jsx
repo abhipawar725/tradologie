@@ -1,9 +1,11 @@
 import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
 import { RiSearch2Line } from "@remixicon/react";
+import { ThemeProvider } from "../../context/ThemeContext";
 
 const AuthLayout = () => {
   return (
+    <ThemeProvider>
     <div className="flex min-h-screen">
       <Sidebar />
 
@@ -23,6 +25,7 @@ const AuthLayout = () => {
         </div>
       </main>
     </div>
+    </ThemeProvider>
   );
 };
 
