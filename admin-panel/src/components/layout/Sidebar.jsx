@@ -12,6 +12,10 @@ const nav = [
     url: "/",
   },
   {
+    label: "test",
+    url: "/test",
+  },  
+  {
     label: "category",
     children: [
       { label: "category list", url: "/category" },
@@ -29,8 +33,6 @@ const nav = [
 ];
 const Sidebar = () => {
   const {theme, setTheme} = useThemeContext()
-  console.log(theme)
-  console.log(setTheme)
   const [openMenu, setOpenMenu] = useState(null);
   const navigate = useNavigate();
   const logout = async () => {

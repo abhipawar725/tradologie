@@ -13,6 +13,7 @@ import ProductEdit from "../pages/product/ProductEdit";
 import UserList from "../pages/user/UserList";
 import UserCreate from "../pages/user/UserCreate";
 import UserEdit from "../pages/user/UserEdit";
+import Test from "../pages/test/Test";
 
 const Approuter = () => {
   return (
@@ -23,6 +24,7 @@ const Approuter = () => {
           <Route element={<ProtectedRoute />}>
             <Route element={<AuthLayout />}>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/test" element={<Test />} />
               <Route path="category">
                 <Route index element={<CategoryList />} />
                 <Route path="add" element={<CategoryCreate />} />

@@ -1,7 +1,11 @@
 import api from "./axios";
 
-export const getCategory = (props = {}) => {
-  return api.get("/api/category", { params: props });
+export const getCategory = async ({queryKey}) => {
+  const [_key, page, limit] = queryKey
+  const res = await api.get("/api/category", { params: {page, limit} });
+  if(res.status !== 200) throw new Error("Failed to fetch category")
+
+  return res.data;  
 };
 
 export const getCategoryById = (id) => {
