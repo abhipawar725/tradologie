@@ -1,24 +1,28 @@
 import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom";
-import AppRoute from "./components/layout/AppRoute"
-import Home from "./pages/Home"
-import Category from "./pages/Category"
-import Products from "./pages/Products"
-import Contact from "./pages/Contact"
-import NotFound from "./pages/NotFound"
+import AppRoute from "./components/layout/AppRoute";
+import Home from "./pages/Home";
+import Category from "./pages/Category";
+import Products from "./pages/Products";
+import Contact from "./pages/Contact";
+import NotFound from "./pages/NotFound";
+import Blogs from "./pages/Blogs";
+import About from "./pages/About";
 
 function App() {
   return (
     <>
       <Router>
-         <Routes>
+        <Routes>
           <Route element={<AppRoute />}>
-          <Route path="/" index element={<Home />} />
-          <Route path="/category" element={<Category />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
+            <Route path="/" index element={<Home />} />
+            <Route path="/category" element={<Category />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
-         </Routes>
+        </Routes>
       </Router>
     </>
   );
