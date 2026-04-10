@@ -106,7 +106,7 @@ export const Create = async (req, res) => {
 export const Update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, parentId, isActive, showInHome } = req.body;
+    const { name, parentId, isActive, showInHome, shortDescription } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid category Id" });
@@ -136,6 +136,10 @@ export const Update = async (req, res) => {
 
     if (req.file) {
       update.image = req.file?.filename || null;
+    }
+
+    if(shortDescription){
+      update.shortDescription = shortDescription
     }
 
     if (Object.keys(update).length === 0) {

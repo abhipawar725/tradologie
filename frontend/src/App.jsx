@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route element={<AppRoute />}>
             <Route path="/" index element={<Home />} />
-            <Route path="/category" element={<Category />} />
+            <Route path="/category/*" element={<Category />} />
             <Route path="/products" element={<Products />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
