@@ -7,10 +7,8 @@ const AppRoute = () => {
     <>
     <Header />
     <main>
-      <div className="container mx-auto">
         <Outlet />
-      </div>
-    </main>
+\    </main>
     <Footer />
     </>
   )

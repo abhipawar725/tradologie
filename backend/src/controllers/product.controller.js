@@ -32,7 +32,7 @@ export const FetchBySlug = async (req, res) => {
 
     const product = await Product.findOne({
       slug: slug.trim().toLowerCase()
-    })
+    }).populate("category", "name")
     .select("-__v")
     .lean();
     
