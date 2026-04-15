@@ -1,0 +1,22 @@
+[
+  {
+    "dialCode": "+91",
+    "country": "India",
+    "states": ["Delhi", "Maharashtra", "Karnataka", "Tamil Nadu", "Gujarat", "Rajasthan", "Uttar Pradesh", "West Bengal"]
+  },
+  {
+    "dialCode": "+1",
+    "country": "United States",
+    "states": ["California", "New York", "Texas", "Florida", "Illinois", "Washington", "Georgia"]
+  },
+  {
+    "dialCode": "+44",
+    "country": "United Kingdom",
+    "states": ["England", "Scotland", "Wales", "Northern Ireland"]
+  },
+  {
+    "dialCode": "+971",
+    "country": "UAE",
+    "states": ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah"]
+  }
+] 
