@@ -1,7 +1,7 @@
 import * as yup from "yup"
 import CountryData from "../data/country.json"
 
-const contactSchema = yup.object().shape({
+export const contactSchema = yup.object({
     userType: yup
     .mixed()
     .oneOf(["importer", "exporter", "aspirant"], "Invalid user type")
@@ -25,21 +25,10 @@ const contactSchema = yup.object().shape({
     .required("Phone number is required")
     .matches(/^[0-9]{10}$/, "Must be 10 digit"),
 
-    countryCode: yup
-    .string()
-    .required("Country code is required"),
-
     country: yup
     .string()
-    .required("Country is required")
-    .test("match-country-code", "Country must match with country code",
-        function(country){
-           const {countryCode} = this.parent;
-           if(!countryCode || !country) return true;
-           const match = CountryData.find((c) => c.country === country);
-           return match?.dialCode === countryCode
-        } 
-    ),
+    .required("Country is required"),
+
     state: yup
     .string()
     .trim()
@@ -47,7 +36,7 @@ const contactSchema = yup.object().shape({
     .test("match-country", "State must be belong to country", function(state){
       const {country} = this.parent;
       if(!country || !state) return true;
-      const match = CountryData.find((c) => c.country === country);
+      const match = CountryData.find((c) => c.name === country);
       return match?.states?.includes(state) ?? false;     
     }),
 

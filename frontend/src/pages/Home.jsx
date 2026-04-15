@@ -4,7 +4,10 @@ import LeftSidebar from "../components/layout/LeftSidebar";
 import { api } from "../api/api";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { contactSchema } from "../validations/contact.schema";
+
 const Home = () => {
+  console.log(contactSchema)
   const getData = async () => {
     const res = await api.get("/category");
     return res?.data?.data?.categories;
